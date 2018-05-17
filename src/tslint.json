@@ -8,10 +8,10 @@
       "camelCase"
     ],
     "component-selector": [
-      true,
-      "element",
-      "cw",
-      "kebab-case"
-    ]
-  }
+true,
+"element",
+"cw",
+"kebab-case"
+]
+}
 }
