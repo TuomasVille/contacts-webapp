@@ -14,31 +14,41 @@ import {ToolbarAction} from '../../ui/toolbar/toolbar-action';
 export class ContactDetailComponent implements OnInit {
 
   contact: Contact;
+  editingEnabled: boolean;
 
   constructor(private  router: Router, private  route: ActivatedRoute,
               private contactService: ContactService, private toolbar: ToolbarService) {
     this.contact = new Contact();
+    this.editingEnabled = false;
   }
 
   ngOnInit() {
-    this.toolbar.toolbarOptions.next(new ToolbarOptions(
-      'Contact', [
-        new ToolbarAction(this.onEdit(), 'edit')
-      ]));
 
     const contactId = this.route.snapshot.paramMap.get('id');
 
+    let toolbarActions: ToolbarAction[];
+
     if (contactId == null) {
-      return;
+      // Create contact
+      this.editingEnabled = true;
+      toolbarActions = [];
+    } else {
+      // View/Edit contact
+      toolbarActions = [new ToolbarAction(this.onEdit.bind(this), 'edit')];
+
+      this.contactService.getContactById(contactId).subscribe(response => {
+        this.contact = response;
+        console.log(this.contact);
+      }, error1 => {
+        console.error('Getting contact failed!');
+        console.error(error1);
+        this.router.navigate(['/contacts']);
+      });
     }
-    this.contactService.getContactById(contactId).subscribe(response => {
-      this.contact = response;
-      console.log(this.contact);
-    }, error1 => {
-      console.error('Getting contact failed!');
-      console.error(error1);
-      this.router.navigate(['/contacts']);
-    });
+
+    this.toolbar.toolbarOptions.next(new ToolbarOptions(
+      'Contact', toolbarActions
+      ));
   }
 
   onNavigateBack(): void {
@@ -50,7 +60,6 @@ export class ContactDetailComponent implements OnInit {
   }
 
   onEdit() {
-    console.log('TODO: activate/deactivate');
+    this.editingEnabled = !this.editingEnabled;
   }
-
 }
