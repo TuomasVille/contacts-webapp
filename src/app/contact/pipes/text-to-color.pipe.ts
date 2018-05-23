@@ -32,6 +32,7 @@ export class TextToColorPipe implements PipeTransform {
 
   transform(value: any, args?: any): any {
     if (value == null || value === '') {
+      return this.defaultColor;
     }
     const firstChar = value.charAt(0).toLowerCase();
       return this.colors[firstChar];
