@@ -26,7 +26,6 @@ export class ContactDetailComponent implements OnInit {
   ngOnInit() {
 
     this.contactId = this.route.snapshot.paramMap.get('id');
-
     let toolbarActions: ToolbarAction[];
 
     if (this.contactId == null) {
@@ -46,10 +45,7 @@ export class ContactDetailComponent implements OnInit {
         this.router.navigate(['/contacts']);
       });
     }
-
-    this.toolbar.toolbarOptions.next(new ToolbarOptions(
-      true, 'Contact', toolbarActions
-    ));
+    this.toolbar.setToolbarOptions(new ToolbarOptions(true, 'Contact', toolbarActions));
   }
 
   onSave(): void {
@@ -70,7 +66,21 @@ export class ContactDetailComponent implements OnInit {
   }
 
   onEdit() {
+    let toolbarActions: ToolbarAction[];
     this.editingEnabled = !this.editingEnabled;
+    if (this.editingEnabled === true) {
+      // Edit mode on
+      console.log('Edit mode enabled');
+      toolbarActions = [
+        new ToolbarAction(this.onDelete.bind(this), 'delete'),
+        new ToolbarAction(this.onEdit.bind(this), 'edit')
+    ];
+    } else {
+      // Edit mode off
+      console.log('Edit mode disabled');
+      toolbarActions = [new ToolbarAction(this.onEdit.bind(this), 'edit')];
+    }
+    this.toolbar.setToolbarOptions(new ToolbarOptions(true, 'Contact', toolbarActions));
   }
 
   onDelete() {
