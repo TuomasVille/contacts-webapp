@@ -1,4 +1,4 @@
 export const environment = {
-  production: false,
+  production: true,
   apiEndpointUrl: 'https://contactswebapitk.azurewebsites.net'
 };

@@ -3,8 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: true,
-  apiEndpointUrl: 'https://contactswebapi.azurewebsites.net/api/contacts'
+  production: false,
+  apiEndpointUrl: 'https://contactswebapitk.azurewebsites.net'
 };
 
 /*
